@@ -1,4 +1,4 @@
-Simple-Movement
+SimpleCollisions
 ===============
 
-A simple example of a ball moving with WSAD controls with velocity, acceloration, and damping(air resistance)
+Everything You need to make a simple Platformer

@@ -33,7 +33,10 @@ package {
 		public var physObjs:Vector.<PhysObj> = new Vector.<PhysObj>
 		
 		public var score:Number = 0
+		public var canvas:Sprite = new Sprite
 		
+		public var initialPlayerX:Number = 200
+		public var initialPlayerY:Number = 200
 		
 		public function Main():void {
 			//Draw a red circle with radius 20 into our player Sprite
@@ -41,15 +44,18 @@ package {
 			
 			//Add the sprite to the stage
 			//player.g = s
+			stage.addChild(canvas)
+			
 			player = new PhysObj()
 			player.graphics.beginFill(0xFF0000)
 			player.graphics.drawCircle(0, 0, 20)
 			player.recalcBounds()
 			physObjs.push(player)
-			stage.addChild(player)
+			canvas.addChild(player)
 			//place the player at coordinates (200,200)
-			player.x = 200
-			player.y = 200
+			player.x = initialPlayerX
+			player.y = initialPlayerY
+			
 			
 			//var s2:Sprite = new Sprite
 			
@@ -61,7 +67,7 @@ package {
 			level = new Level1
 			level.x = 300
 			level.y = 300
-			stage.addChild(level)
+			//stage.addChild(level)
 			
 			var children:Vector.<DisplayObject> = new Vector.<DisplayObject>
 			for (var i:int = 0; i < level.numChildren; i++) {
@@ -77,8 +83,9 @@ package {
 					obj.x += level.x
 					obj.y += level.y
 				}
-				stage.addChild(s)
+				canvas.addChild(s)
 			}
+			
 			
 			
 			//physObjs.push(obstacle)
@@ -132,7 +139,7 @@ package {
 					if(obj is Collectable){
 						if (obj.handleCollisonsWith(player)) {
 							score += 10
-							stage.removeChild(obj)
+							canvas.removeChild(obj)
 							physObjs.splice(physObjs.indexOf(obj), 1)
 							trace("SCORE:	", score)
 						}
@@ -143,7 +150,8 @@ package {
 				//obj.updateGraphics()
 			}
 			//player.updateGraphics()
-			
+			canvas.x = -player.x+initialPlayerX
+			canvas.y = -player.y+initialPlayerY
 			//trace(player.colliding)
 			
 		}

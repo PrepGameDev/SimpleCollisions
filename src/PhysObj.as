@@ -7,36 +7,46 @@ package
 	 */
 	public class PhysObj extends Sprite
 	{
-		//public var x:Number = 0
-		//public var y:Number = 0
+		//x, and y are inherited by Sprite
+		//This gives us the advantage of not needing a seperate graphical object
+		//The physics object is the graphical object
+		
+		//The velocity of the object
 		public var vx:Number = 0
 		public var vy:Number = 0
+		//The acceloration of the object
 		public var ax:Number = 0
 		public var ay:Number = 0
+		//The damping (air resistance) of the object
 		public var damping:Number = .9
-		public var g:Sprite
 		
+		//Flags determining whether or not the object is a detector (an object that listens for collisions but does not resolve them)
+		//	or collidable (an object that will factor into collision detection and resolution)
 		public var detector:Boolean 
 		public var collidable:Boolean
 		
+		//The min/max, X/Y, values of the collision bounderies
+		//	This is defined by a box aligned to the X and Y axis
 		public var minX:Number = 0
 		public var maxX:Number = 0
 		public var minY:Number = 0
 		public var maxY:Number = 0
 		
+		//A flag who's value is changed depending on whether or not the object is colliding with something
+		//	At this point only the player's colliding flag changes
 		public var colliding:Boolean = false
 		
 		
 		
-		public function PhysObj(width:Number=-1, height:Number=-1, detector:Boolean = false, collidable:Boolean = true) 
-		{
-			recalcBounds(width, height)
-			
-			this.g = g
+		public function PhysObj(width:Number=-1, height:Number=-1, detector:Boolean = false, collidable:Boolean = true):void {
+			//recalculate the bounds from the get go
+			recalcBounds(width, height)			
+			//Define public flags by parameter input
 			this.detector = detector
-			this.collidable = collidable
-			
+			this.collidable = collidable			
 		}
+		//Recalculate the bounds of the object by the width and height of its graphical components
+		//	Alternately a custom width and height can be set with the corresponding parameters.
 		public function recalcBounds(width:Number=-1, height:Number=-1):void {
 			if (width < 0) width = this.width			
 			if (height < 0) height = this.height
@@ -46,11 +56,21 @@ package
 			maxY = height * .5
 		}
 		
+		//Detect collisions with obj
+		//	In this case obj is always the player
+		// NOTE: this code only works if the obj is the player. It does not work in the general case
 		public function handleCollisonsWith(obj:PhysObj):Boolean {
+			//if either object being sampled is flagged as not collidable just return false
 			if (!obj.collidable || !this.collidable) return false
 			
+			//instantiate distX,distY
 			var distX:Number = 0
 			var distY:Number = 0
+			
+			//Find axis where the shapes overlap
+			//	By the Seperating Axis Theorem if the shapes do not overlap along any axis, they are not touching
+			// 	in which case we can end the function early. During the collsion detection step the distances along 
+			//	each axis are stored.			
 			if (minX + x > obj.maxX + obj.x) {
 				return false
 			}else {
@@ -75,9 +95,13 @@ package
 			}
 			//if (obj.vx * distX > 0) return
 			//if (obj.vy * distY > 0) return
-				
+			
+			//If we get to this point obj is for sure colliding with this 
 			obj.colliding = true
-			if (!this.detector){
+			//If this is not a detector resolve the collisions
+			if (!this.detector) {
+				//Find the shortest distance between each shape and determine the axis of resolution.
+				//	Then translate obj (always the player) outside of "this" along that axis.
 				if (Math.abs(distX) < Math.abs(distY)) {
 					obj.x += distX
 					obj.vx = 0
@@ -87,8 +111,8 @@ package
 				}
 			}
 			
+			//There was a collision: return true
 			return true
-			trace("Contact", distX, distY)
 		}
 		
 	}

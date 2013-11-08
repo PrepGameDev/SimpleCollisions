@@ -52,6 +52,7 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="src\SimpleCollisions.swc" />
+    <element path="src\Player.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

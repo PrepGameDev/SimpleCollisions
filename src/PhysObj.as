@@ -1,5 +1,6 @@
 package  
 {
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -19,6 +20,8 @@ package
 		public var ay:Number = 0
 		//The damping (air resistance) of the object
 		public var damping:Number = .9
+		
+		public var g:MovieClip
 		
 		//Flags determining whether or not the object is a detector (an object that listens for collisions but does not resolve them)
 		//	or collidable (an object that will factor into collision detection and resolution)

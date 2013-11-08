@@ -1,5 +1,6 @@
 package {
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -43,6 +44,14 @@ package {
 		public var initialPlayerX:Number = 200
 		public var initialPlayerY:Number = 200
 		
+		//The frame our player animation is in
+		public var playerFrame:int = 0
+		//Points on the timeline for our player animation
+		public var stopFrame:int = 1
+		public var minWalkFrame:int = 2
+		public var maxWalkFrame:int = 5
+		public var jumpFrame:int = 6
+		
 		public function Main():void {		
 			
 			//Add the canvas to the stage
@@ -50,9 +59,14 @@ package {
 			
 			//instantiate the player
 			player = new PhysObj()
+			
+			player.g = new Player()
+			player.addChild(player.g)
+			player.recalcBounds()
+			
 			//draw it as a red circle with radius 20
-			player.graphics.beginFill(0xFF0000)
-			player.graphics.drawCircle(0, 0, 20)
+			//player.graphics.beginFill(0xFF0000)
+			//player.graphics.drawCircle(0, 0, 20)
 			//recalculate the player's bounds, so that they match the width/height of the circle
 			player.recalcBounds()
 			//add the player to the list of physics objects
@@ -159,10 +173,27 @@ package {
 			}
 			//Move the Canvas according the the player's motion so that the player is always in
 			//	the same place with reference to the stage.
-			canvas.x = -player.x+initialPlayerX
-			canvas.y = -player.y+initialPlayerY
+			canvas.x = -player.x + initialPlayerX			
+			canvas.y = -player.y + initialPlayerY
 			
-			
+			//handle player run animation
+			if (player.colliding) {
+				//if were going slow enough use stop animation
+				if (Math.abs(player.vx) < .075) {
+					playerFrame = stopFrame
+				}else {
+				//otherwise iterate the frame 
+					playerFrame++
+					//make sure were inside the frame range for walking
+					if (playerFrame < minWalkFrame || playerFrame > maxWalkFrame) {
+						playerFrame = minWalkFrame
+					}
+				}	
+			//if we're not colliding go to the jump frame
+			}else {
+				playerFrame = jumpFrame
+			}
+			player.g.gotoAndStop(playerFrame)
 		}
 		
 		public function keyDown(e:KeyboardEvent):void {

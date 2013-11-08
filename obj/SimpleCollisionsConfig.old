@@ -37,6 +37,7 @@
     </source-path>
     <library-path append="true">
       <path-element>C:\Users\Danny\Desktop\flash stuff\Game Dev Club\SimpleCollisions\src\SimpleCollisions.swc</path-element>
+      <path-element>C:\Users\Danny\Desktop\flash stuff\Game Dev Club\SimpleCollisions\src\Player.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

@@ -40,9 +40,9 @@ package {
 		//	By adding everything to the canvas instead of the stage we can move them in unison
 		public var canvas:Sprite = new Sprite
 		
-		//The initial position of the player
-		public var initialPlayerX:Number = 200
-		public var initialPlayerY:Number = 200
+		//the center of the screen
+		public var screenCenterX:Number 
+		public var screenCenterY:Number 
 		
 		//The frame our player animation is in
 		public var playerFrame:int = 0
@@ -53,6 +53,8 @@ package {
 		public var jumpFrame:int = 6
 		
 		public function Main():void {		
+			screenCenterX = stage.stageWidth/2
+			screenCenterY = stage.stageHeight/2
 			
 			//Add the canvas to the stage
 			stage.addChild(canvas)
@@ -74,8 +76,8 @@ package {
 			//add the player to the canvas
 			canvas.addChild(player)
 			//place the player at coordinates (200,200)
-			player.x = initialPlayerX
-			player.y = initialPlayerY
+			player.x = 200
+			player.y = 200
 			
 			//make a new level
 			level = new Level1
@@ -173,8 +175,8 @@ package {
 			}
 			//Move the Canvas according the the player's motion so that the player is always in
 			//	the same place with reference to the stage.
-			canvas.x = -player.x + initialPlayerX			
-			canvas.y = -player.y + initialPlayerY
+			canvas.x = -player.x + screenCenterX			
+			canvas.y = -player.y + screenCenterY
 			
 			//handle player run animation
 			if (player.colliding) {

@@ -6,7 +6,7 @@ package
 	 * ...
 	 * @author Danny Weitekamp
 	 */
-	public class PhysObj extends Sprite
+	public class PhysObj extends MovieClip
 	{
 		//x, and y are inherited by Sprite
 		//This gives us the advantage of not needing a seperate graphical object
@@ -35,10 +35,12 @@ package
 		public var minY:Number = 0
 		public var maxY:Number = 0
 		
+		
 		//A flag who's value is changed depending on whether or not the object is colliding with something
 		//	At this point only the player's colliding flag changes
 		public var colliding:Boolean = false
-		
+		/*TODO: 6A) add another flag(boolean) called touchingGround. 
+					We are going to use this property to determine whether the player is touching the top of a block*/
 		
 		
 		public function PhysObj(width:Number=-1, height:Number=-1, detector:Boolean = false, collidable:Boolean = true):void {
@@ -111,6 +113,9 @@ package
 				}else {
 					obj.y += distY
 					obj.vy = 0
+					
+					/*TODO: 6B) Make obj.touchingGround true depending on the sign of distY
+								Hint: Pesdocode-> if(distY is less than 0) touchingGround equals true*/
 				}
 			}
 			
